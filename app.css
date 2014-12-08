@@ -1,0 +1,20 @@
+
+form {
+    margin: 2em;
+    margin-bottom: 3em;
+}
+.field {
+    margin-bottom: 1.2em;
+}
+
+.formRow {
+    margin-bottom: 1em;
+}
+
+.error {
+    color: #b94a48;
+}
+
+input.ng-invalid.ng-touched {
+    border : 2px solid red;
+}

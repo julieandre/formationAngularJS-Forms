@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <title>Formulaire dynamique</title>
+  <link rel="stylesheet" href="app.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.4/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.4/angular-messages.js"></script>
+  <script src="app.js"></script>
+</head>
+
+<body ng-controller="DynFormCtrl">
+  <h1>Formulaire dynamique</h1>
+
+  <form name="form" ng-submit="save()">
+    <div ng-repeat="field in fields" ng-switch="field.type" ng-form name="row">
+      {{field.label}}
+      <div ng-switch-when="select">
+        <select name="field" ng-model="user[field.property]" ng-options="code as label for (code, label) in field.list"></select>
+      </div>
+      <div ng-switch-when="checkbox">
+        <input name="field" ng-model="user[field.property]" type="checkbox"
+                ng-true-value="'oui'" ng-false-value="'non'"/>
+      </div>
+      <div ng-switch-default>
+        <input name="field" ng-model="user[field.property]" type="{{field.type}}"
+                ng-required="field.constraints.required"/>
+        <span ng-messages="row.field.$error" class="error" ng-show="row.field.$touched">
+
+          <span ng-message="number">Ceci n'est pas un nombre.</span>
+          <span ng-message="email">Ceci n'est pas un email.</span>
+          <span ng-message="required">Champ obligatoire.</span>
+        </span>
+      </div>
+    </div>
+    <input type="submit" value="Enregistrer" ng-disabled="form.$pristine || form.$invalid"/>
+    <img src="ajax-loader.gif" alt="" ng-show="waiting"/>
+    <span class="error" ng-bind="message"></span>
+  </form>
+  <pre>{{user}}
+
+    {{ fields | json}}</pre>
+
+</body>
+</html>
